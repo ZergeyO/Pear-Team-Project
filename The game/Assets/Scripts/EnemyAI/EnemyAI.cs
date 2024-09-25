@@ -6,7 +6,7 @@ using UnityEngine.AI;
 public class EnemyAI : MonoBehaviour
 {
     [SerializeField] private float _roamingDistanceMax = 7.0f;
-    [SerializeField] private float _roamingDistanceMin = 3.0f;
+    [SerializeField] private float _roamingDistanceMin = 4.0f;
     [SerializeField] private float _roamingTimeMax = 2.0f;
     [SerializeField] private float _idleTimeMax = 3.0f;
     [SerializeField] private State _startState = State.IDLE;
@@ -14,8 +14,8 @@ public class EnemyAI : MonoBehaviour
     private NavMeshAgent _navMeshAgent;
     private State _state;
     private float _doingTime;
-    private Vector3 _startingPosition;
-    private Vector3 _roamPosition;
+    private Vector2 _startingPosition;
+    private Vector2 _roamPosition;
     private enum State
     {
         IDLE,
@@ -52,7 +52,7 @@ public class EnemyAI : MonoBehaviour
                 break;
             case State.Roaming:
                 _doingTime -= Time.deltaTime;
-                if (_doingTime < 0 || transform.position == _roamPosition)
+                if (_doingTime < 0 || (transform.position.x == _roamPosition.x && transform.position.y==_roamPosition.y))
                 {
                     _doingTime = _idleTimeMax;
                     _state = State.IDLE;
@@ -67,8 +67,8 @@ public class EnemyAI : MonoBehaviour
         _navMeshAgent.SetDestination(_roamPosition);
     }
 
-    private Vector3 GetRoamingPosition()
+    private Vector2 GetRoamingPosition()
     {
-        return _startingPosition + MovementSystem.GetRandomDir() * UnityEngine.Random.Range(_roamingDistanceMin, _roamingDistanceMax);
+        return _startingPosition + MovementSystem.GetRandomDir().normalized * UnityEngine.Random.Range(_roamingDistanceMin, _roamingDistanceMax);
     }
 }

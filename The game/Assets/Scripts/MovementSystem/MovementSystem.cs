@@ -15,7 +15,7 @@ public class MovementSystem : MonoBehaviour
 
     public bool IsMoving
     {
-        get { return _isMoving}
+        get { return _isMoving; }
     }
 
     public float Speed
@@ -32,8 +32,12 @@ public class MovementSystem : MonoBehaviour
         return inputVector.normalized * (_speed * Time.fixedDeltaTime);
     }
 
-    public static Vector3 GetRandomDir()
+    public static Vector2 GetRandomDir()
     {
-        return new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized;
+        return new Vector2(Random.Range(-1, 1), Random.Range(-1, 1));
+        /* 
+            Создаётся вектор со случайными координатами в целочисленном диапазоне от -1 до 1. 
+            Требуется ли исключить вектор (0,0)?
+        */
     }
 }
